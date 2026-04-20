@@ -130,18 +130,25 @@ claude
 
 ### 账号管理
 
+> ⚠️ **强烈建议使用 Token 方式登录！**
+>
+> Windsurf 官方存在 bug：通过邮箱/密码直接登录时，请求可能仍然路由到原来的账号，导致账号切换不生效。
+>
+> **正确做法**：打开 Windsurf 编辑器，访问 [获取 Auth Token](https://windsurf.com/editor/show-auth-token?workflow=) 页面，复制 Token 后使用下面的 Token 方式添加账号。
+
 ```bash
-# 用 Token 添加账号（推荐，访问 windsurf.com/show-auth-token 获取）
+# ✅ 用 Token 添加账号（强烈推荐）
+# 获取 Token：打开 Windsurf 编辑器 → 访问 https://windsurf.com/editor/show-auth-token?workflow=
 curl -X POST http://localhost:3003/auth/login \
   -H "Content-Type: application/json" \
   -d '{"token": "your-windsurf-token"}'
 
-# 用 API Key 添加
+# ⚠️ 用 API Key 添加（不推荐，可能存在路由 bug）
 curl -X POST http://localhost:3003/auth/login \
   -H "Content-Type: application/json" \
   -d '{"api_key": "sk-ws-..."}'
 
-# 批量添加
+# 批量添加（推荐用 Token）
 curl -X POST http://localhost:3003/auth/login \
   -H "Content-Type: application/json" \
   -d '{"accounts": [{"token": "t1"}, {"token": "t2"}]}'
