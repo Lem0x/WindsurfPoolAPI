@@ -1,17 +1,18 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Node.js-%3E%3D20-339933?style=flat-square&logo=node.js&logoColor=white" />
   <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" />
-  <img src="https://img.shields.io/badge/Models-87%2B-blueviolet?style=flat-square" />
+  <img src="https://img.shields.io/badge/Models-113%2B-blueviolet?style=flat-square" />
   <img src="https://img.shields.io/badge/Zero_Dependencies-yes-success?style=flat-square" />
-  <img src="https://img.shields.io/badge/v2.0-Latest-orange?style=flat-square" />
+  <img src="https://img.shields.io/badge/v2.0.3-Latest-orange?style=flat-square" />
+  <img src="https://img.shields.io/github/stars/guanxiaol/WindsurfPoolAPI?style=flat-square&color=yellow" />
 </p>
 
 <h1 align="center">WindsurfPoolAPI</h1>
 
 <p align="center">
   <b>Enterprise-grade multi-account pool proxy for Windsurf AI platform.</b><br/>
-  Expose 87+ models (Claude / GPT / Gemini / DeepSeek / Grok / Qwen) via standard OpenAI & Anthropic APIs.<br/>
-  <sub>企业级 Windsurf 多账号池化 API 代理 —— 87+ 模型，OpenAI / Anthropic 双协议兼容</sub>
+  Expose 113+ models (Claude / GPT / Gemini / DeepSeek / Grok / Qwen / Kimi / GLM) via standard OpenAI & Anthropic APIs.<br/>
+  <sub>企业级 Windsurf 多账号池化 API 代理 —— 113+ 模型，OpenAI / Anthropic 双协议兼容，Cursor / Claude Code 原生支持</sub>
 </p>
 
 <p align="center">
@@ -38,7 +39,7 @@ This project is for **personal learning, research, and self-hosting only**. Comm
 | Feature | Description |
 | :--- | :--- |
 | **Dual Protocol** | `/v1/chat/completions` (OpenAI) + `/v1/messages` (Anthropic native) |
-| **87+ Models** | Claude 4.7 · GPT-5.4 · Gemini 3.1 · DeepSeek R1 · Grok 3 · Qwen 3 · Kimi K2.5 and more |
+| **113+ Models** | Claude Opus 4.7 · GPT-5.4 · Gemini 3.1 · DeepSeek R1 · Grok 3 · Qwen 3 · Kimi K2.5 · GLM-5.1 and more |
 | **Multi-Account Pool** | Capacity-based load balancing, automatic failover, per-model rate-limit isolation |
 | **Token & Credit Analytics** | Per-API × per-model aggregation down to individual request level |
 | **Admin Dashboard** | Full-featured SPA: account management, proxy config, real-time logs, usage charts |
@@ -46,7 +47,9 @@ This project is for **personal learning, research, and self-hosting only**. Comm
 | **OAuth Login** | Google / GitHub Firebase OAuth + manual token refresh |
 | **Dynamic Stall Detection** | Input-length-aware timeout (30s–90s) prevents false positives on large contexts |
 | **Persistent State** | All settings, account status, tokens survive restarts |
+| **Image Upload** | Multimodal support — send images via `image_url` blocks (base64 or URL) |
 | **Tool Calling** | `<tool_call>` protocol compatible — works with Cursor, Aider, and other AI coding tools |
+| **Cursor Compatible** | 80+ model name aliases including Cursor-friendly names without "claude" keyword |
 | **Streaming SSE** | OpenAI format with `stream_options.include_usage` support |
 | **Zero Dependencies** | Pure Node.js built-in modules, nothing to install |
 
@@ -54,7 +57,7 @@ This project is for **personal learning, research, and self-hosting only**. Comm
 <summary><b>中文特性列表</b></summary>
 
 - **双协议兼容** — OpenAI + Anthropic 原生端点，无需任何中间件
-- **87+ 模型** — 启动时自动拉取 Windsurf 最新 catalog，实时更新
+- **113+ 模型** — 启动时自动拉取 Windsurf 最新 catalog，实时更新
 - **多账号池** — 按剩余容量均衡分配，自动故障转移，per-model 限速隔离
 - **Token + Credit 精细统计** — 按 API × 模型分层聚合，精确到单次请求
 - **Dashboard 管理后台** — 账号管理、代理配置、实时日志、使用图表、封禁侦测
