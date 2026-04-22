@@ -29,6 +29,13 @@ USER app
 
 EXPOSE 3003
 
+# 复制启动脚本
+COPY entrypoint.sh /entrypoint.sh
+# 修复 Windows/Mac 可能带来的换行符问题，并赋予执行权限
+RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+# 设置自定义入口点
+ENTRYPOINT ["/entrypoint.sh"]
+
 # Simple healthcheck — /health is served by the HTTP server even when the
 # account pool is empty.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
