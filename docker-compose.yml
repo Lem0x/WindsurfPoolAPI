@@ -21,11 +21,14 @@ services:
       # Mount the Windsurf Language Server binary from the host. The binary is
       # closed-source Windsurf and cannot be baked into the image.
       - /opt/windsurf:/opt/windsurf:ro
-      - ./data:/app/data
-      - ./logs:/app/logs
+      - windsurf_data:/app/data
+      - windsurf_logs:/app/logs
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3003/health"]
       interval: 30s
       timeout: 5s
       retries: 3
       start_period: 10s
+    volumes:
+      windsurf_data:
+      windsurf_logs:
