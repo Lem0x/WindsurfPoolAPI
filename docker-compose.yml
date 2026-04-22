@@ -10,12 +10,7 @@ services:
       # Mount the Windsurf Language Server binary from the host. The binary is
       # closed-source Windsurf and cannot be baked into the image.
       - /opt/windsurf:/opt/windsurf:ro
-      # Persist runtime state across container restarts.
-      - ./accounts.json:/app/accounts.json
-      - ./stats.json:/app/stats.json
-      - ./runtime-config.json:/app/runtime-config.json
-      - ./proxy-config.json:/app/proxy-config.json
-      - ./model-access.json:/app/model-access.json
+      - ./data:/app/data
       - ./logs:/app/logs
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3003/health"]
