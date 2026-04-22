@@ -25,14 +25,19 @@ ENV LOG_LEVEL=info
 RUN mkdir -p /app/logs /tmp/windsurf-workspace \
     && chown -R app:app /app /tmp/windsurf-workspace
 
-USER app
-
-EXPOSE 3003
-
+# ================= 关键修改位置 =================
+# 在切换为 app 用户之前（此时还是 root），处理入口脚本
 # 复制启动脚本
 COPY entrypoint.sh /entrypoint.sh
 # 修复 Windows/Mac 可能带来的换行符问题，并赋予执行权限
 RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+
+# 脚本处理完毕，现在安全地切换到非特权用户
+USER app
+# ===============================================
+
+EXPOSE 3003
+
 # 设置自定义入口点
 ENTRYPOINT ["/entrypoint.sh"]
 
