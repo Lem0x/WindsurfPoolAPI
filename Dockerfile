@@ -37,7 +37,7 @@ USER app
 # ===============================================
 
 EXPOSE 3003
-
+USER root
 # 设置自定义入口点
 ENTRYPOINT ["/entrypoint.sh"]
 
