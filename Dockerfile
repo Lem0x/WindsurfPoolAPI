@@ -1,48 +1,40 @@
-# Zero-dependency Node 20 runtime. The project has no `npm install` step —
-# everything lives in `node:*` builtins — so this image is effectively
-# Node + source, nothing else.
-FROM node:20-alpine
+# 放弃 Alpine，改用基于 Debian 的 slim 镜像以提供 glibc 支持
+FROM node:20-slim
 
-# Non-root user for the app
-RUN addgroup -S app && adduser -S app -G app
+# 安装 wget (用于健康检查) 并创建 app 用户 (Debian 的用户创建命令与 Alpine 不同)
+RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/* \
+    && groupadd -r app && useradd -r -g app app
 
 WORKDIR /app
 
-# Copy source. `.dockerignore` keeps runtime artefacts (accounts.json, .env,
-# stats.json, data/, logs/) out even if they exist in the build context.
+# 复制源代码并赋予权限
 COPY --chown=app:app package.json ./
 COPY --chown=app:app src ./src
 COPY --chown=app:app docs ./docs
 
-# The Language Server binary is NOT bundled (closed-source Windsurf release);
-# mount it at runtime. See docker-compose.yml for the bind-mount example.
+# 环境变量设置
 ENV LS_BINARY_PATH=/opt/windsurf/language_server_linux_x64
 ENV PORT=3003
 ENV LS_PORT=42100
 ENV LOG_LEVEL=info
 
-# Writable locations for runtime state
+# 创建运行时所需的目录并赋予 app 用户权限
 RUN mkdir -p /app/logs /tmp/windsurf-workspace \
     && chown -R app:app /app /tmp/windsurf-workspace
 
-# ================= 关键修改位置 =================
-# 在切换为 app 用户之前（此时还是 root），处理入口脚本
-# 复制启动脚本
+# 复制启动脚本并修复换行符/权限
 COPY entrypoint.sh /entrypoint.sh
-# 修复 Windows/Mac 可能带来的换行符问题，并赋予执行权限
 RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
 
-# 脚本处理完毕，现在安全地切换到非特权用户
-USER app
-# ===============================================
+# 强制使用 root 启动，确保能顺利读写外部挂载的 ./data 和 ./logs
+USER root
 
 EXPOSE 3003
-USER root
+
 # 设置自定义入口点
 ENTRYPOINT ["/entrypoint.sh"]
 
-# Simple healthcheck — /health is served by the HTTP server even when the
-# account pool is empty.
+# 健康检查
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD wget -qO- http://127.0.0.1:3003/health || exit 1
 
