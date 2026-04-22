@@ -4,19 +4,8 @@ services:
     image: windsurfapi:latest
     container_name: windsurfapi
     restart: unless-stopped
-    ports:
-      - "3003:3003"
-    environment:
-      PORT: 3003
-      LS_PORT: 42100
-      LS_BINARY_PATH: /opt/windsurf/language_server_linux_x64
-      DEFAULT_MODEL: gpt-4o-mini
-      MAX_TOKENS: 8192
-      LOG_LEVEL: info
-      # Set a password to protect the dashboard. Leave empty for open access.
-      DASHBOARD_PASSWORD: ""
-      # Optional — require an API key for /v1/* endpoints.
-      API_KEY: ""
+    expose:
+      - "3003"
     volumes:
       # Mount the Windsurf Language Server binary from the host. The binary is
       # closed-source Windsurf and cannot be baked into the image.
